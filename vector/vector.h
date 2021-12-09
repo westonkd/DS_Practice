@@ -89,9 +89,11 @@ namespace Custom {
 
     template <class T>
     T Vector<T>::push_back(T item) {
-        if (this->numSize + 1 == this->numCapacity)
+        if (this->numSize >= this->numCapacity)
             this->increaseCapacity();
+
         this->array[this->numSize] = item;
+        this->numSize += 1;
 
         return item;
     }
@@ -99,11 +101,14 @@ namespace Custom {
     // private
     template <class T>
     T * Vector<T>::increaseCapacity() {
-        T* newArray = this->allocate(this->numCapacity * 2);
+        int newCapacity = this->numCapacity * 2;
+
+        T* newArray = this->allocate(newCapacity);
         this->copyArray(newArray, this->array, this->numSize);
         this->deallocate();
         this->array = newArray;
 
+        this->numCapacity = newCapacity;
         return this->array;
     }
 

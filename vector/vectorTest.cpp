@@ -81,9 +81,60 @@ void copyConstructor() {
 		).to("to be filled with 1 (end)", 1);
 }
 
+void clear() {
+	Custom::Vector<int> subject(10, 1);
+
+	subject.clear();
+
+	Testing::Expect<int>(
+		subject.size(),
+		"when the vector is cleared"
+		).to("to have size() 0", 0);
+
+	Testing::Expect<int>(
+		subject.capacity(),
+		"when the vector is cleared"
+		).to("to have unchanged capacity", 10);
+}
+
+void push_back() {
+	Custom::Vector<int> subject(5, 1);
+
+	subject.push_back(2);
+
+	Testing::Expect<int>(
+		subject.at(subject.size() - 1),
+		"when an item is pushed back"
+		).to("append the value to the end of the vector", 2);
+
+	Testing::Expect<int>(
+		subject.capacity(),
+		"when an item is pushed back at full capacity"
+		).to("doubles the capacity", 10);
+}
+
+void empty() {
+	Custom::Vector<int> subject(5, 1);
+	subject.clear();
+
+	Testing::Expect<int>(
+		subject.size(),
+		"a cleared vector"
+		).to("have size 0", 0);
+
+	Testing::Expect<int>(
+		subject.capacity(),
+		"a cleared vector"
+		).to("an unchaged capacity", 5);
+}
+
 int main() {
 	defaultConstructor();
 	capacityConstructor();
 	fillConstructor();
+	clear();
+	push_back();
+	empty();
+	
 	return 0;
 }
