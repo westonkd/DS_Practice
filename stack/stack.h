@@ -12,7 +12,7 @@ namespace Custom {
 
     public:
         Stack();
-        Stack(Stack& Vector);
+        Stack(Stack&);
         T push(T);
         T pop();
         T peek();
