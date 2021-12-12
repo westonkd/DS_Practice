@@ -5,23 +5,24 @@ namespace Custom {
 
     template <class T>
     class Vector {
-        // Member Variables
-        int numSize;
-        int numCapacity;
-        T * array;
-
         // Private methods
         T * allocate(int size);
         void deallocate();
         T * fillArray(T* array, T fill, int size);
         T * copyArray(T* destination, T* source, int size);
         T * increaseCapacity();
+        
+    protected:
+        int numSize;
+        int numCapacity;
+        T * array;
 
     public:
         Vector();
         Vector(int numElements);
         Vector(int numElements, T fill);
         Vector(Vector& vector);
+        Vector(T* array, int size, int capacity);
         ~Vector();
 
         void clear();
@@ -33,9 +34,8 @@ namespace Custom {
         T at(int index) { return this->array[index]; } // TODO: bounds checking
 
         friend std::ostream& operator<<(std::ostream& os, const Vector& rhs) {
-            for(T * p = rhs.array; *p; p++) {
-                os << *p;
-                os << ',';
+            for(int i = 0; i < rhs.numSize; i++) {
+                os << rhs.array[i] << ",";
             }
 
             return os;
@@ -74,6 +74,13 @@ namespace Custom {
             this->numSize
             );
 
+    }
+
+    template<class T>
+    Vector<T>::Vector(T* array, int size, int capacity) {
+        this->array = this->copyArray(this->allocate(capacity), array, size);
+        this->numSize = size;
+        this->numCapacity = capacity;
     }
 
     template <class T>
